@@ -15,20 +15,26 @@ interface PublicTransportationCardProps {
 
 export const PublicTransportationCard = ({ children }: PublicTransportationCardProps) => {
     return (
-        <Card>
+        <Card className="shadow-md">
             {children}
         </Card>
     )
 };
 
-interface HeaderProps { text: string, isLoading: boolean }
-PublicTransportationCard.Header = (props: HeaderProps) => {
+interface HeaderProps { text: string, lastUpdated?: Date | undefined, isLoading: boolean }
+PublicTransportationCard.Header = (props: HeaderProps) => {    
     return (
         <CardHeader data-testid="public-transportation-card-header">
             <CardTitle className="flex align-middle">
-                <span className="my-auto mr-2 text-xl">
-                    {props.text}
-                </span>
+                <div className="flex justify-end">
+                    <span className="my-auto mr-2 text-xl">
+                        {props.text}
+                    </span>
+                    {props.lastUpdated &&
+                        <span className="my-auto mr-2 text-md font-bold">
+                            Last updated: {props.lastUpdated.toLocaleTimeString()}
+                        </span>}
+                </div>
                 <BounceLoader className="my-auto" data-testid="public-transportation-card-spinner" loading={props.isLoading} speedMultiplier={0.5} size={20} color="black" />
             </CardTitle>
         </CardHeader>)
