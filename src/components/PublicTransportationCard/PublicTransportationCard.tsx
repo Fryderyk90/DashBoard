@@ -1,6 +1,13 @@
-import { TransportDataObject } from "../../api/publicTransport/types";
-import { FadeLoader } from "react-spinners";
-
+import { Transport, TransportDataObject } from "../../api/publicTransport/types";
+import { BounceLoader, FadeLoader } from "react-spinners";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 interface PublicTransportationCardProps {
     children?: React.ReactNode;
@@ -8,25 +15,47 @@ interface PublicTransportationCardProps {
 
 export const PublicTransportationCard = ({ children }: PublicTransportationCardProps) => {
     return (
-        <>
+        <Card>
             {children}
-        </>
+        </Card>
     )
 };
 
 interface HeaderProps { text: string, isLoading: boolean }
 PublicTransportationCard.Header = (props: HeaderProps) => {
-    const Spinner = (
-        <div data-testid="public-transportation-card-spinner" className="flex flex-row">
-            <h2 className="my-auto mx-2">{props.text}</h2>
-            <FadeLoader width={2} color="#36d7b7" />
-        </div>
-    )
-    const header = (
-        <h2 data-testid="public-transportation-card-header">
-            {props.text}
-        </h2>
-    )
+    return (
+        <CardHeader data-testid="public-transportation-card-header">
+            <CardTitle className="flex align-middle">
+                <span className="my-auto mr-2 text-xl">
+                    {props.text}
+                </span>
+                <BounceLoader className="my-auto" data-testid="public-transportation-card-spinner" loading={props.isLoading} speedMultiplier={0.5} size={20} color="black" />
+            </CardTitle>
+        </CardHeader>)
+};
 
-    return (props.isLoading ? Spinner : header)
+interface ContentProps { info: Transport[] | undefined }
+PublicTransportationCard.Content = (props: ContentProps) => {
+    return (
+        <CardContent>
+            <CardDescription>
+                <div className="flex flex-col">
+                    <div className="grid grid-cols-3 mb-2 border-b-2">
+                        <span className="text-sm font-bold">Line</span>
+                        <span className="text-sm font-bold">Time</span>
+                        <span className="text-sm font-bold">Destination</span>
+                    </div>
+                    {props?.info?.map((departure, index) => {
+                        return (
+                            <div className="grid grid-cols-3" key={index}>
+                                <span className="text-sm text-start">{departure.LineNumber}</span>
+                                <span className="text-sm text-start">{departure.DisplayTime}</span>
+                                <span className="text-sm text-start">{departure.Destination}</span>
+                            </div>
+                        )
+                    })}
+                </div>
+            </CardDescription>
+        </CardContent>
+    )
 };
