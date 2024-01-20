@@ -4,7 +4,7 @@ import { DeparturesResponse, TransportDataObject, UseQueryResult } from "./types
 
 
 
-export const useTransportationService = () => {
+export const usePublicTransportApi = () => {
     const { isLoading: trainsIsLoading, isError: trainsIsError, error: trainsError, data: trainsResponse } = useQuery<DeparturesResponse, Error>({
         queryKey: ['trainData'],
         queryFn: () => fetchTransportData(getTrainInformation),
@@ -35,7 +35,7 @@ export const useTransportationService = () => {
 }
 
 
-export const fetchTransportData = async (request: string): Promise<DeparturesResponse> => {
+const fetchTransportData = async (request: string): Promise<DeparturesResponse> => {
     try {
         // fetch request
         const response = await fetch(request);
