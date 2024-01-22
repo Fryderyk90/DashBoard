@@ -2,8 +2,6 @@ import {BounceLoader} from "react-spinners";
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
   } from "../../ui/card"
@@ -23,7 +21,7 @@ export const PublicTransportationCard = ({ children }: PublicTransportationCardP
     )
 };
 
-interface HeaderProps { text: string, lastUpdated?: Date | undefined, isLoading: boolean, refetch: () => Promise<void> }
+interface HeaderProps { text: string, lastUpdated?: Date | undefined, isLoading: boolean, refetch?: () => Promise<void> }
 PublicTransportationCard.Header = (props: HeaderProps) => {
     return (
         <CardHeader data-testid="public-transportation-card-header">
