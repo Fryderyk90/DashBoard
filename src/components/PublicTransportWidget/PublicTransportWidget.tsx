@@ -1,26 +1,44 @@
 
-import { useQueryClient } from '@tanstack/react-query'
 import { Button } from "@/components/ui/button"
 import { usePublicTransportApi } from '../../api/publicTransport/usePublicTransportApi'
-import { PublicTransportationCard } from './PublicTransportationCard'
 import { linesToSollentuna } from '../../api/publicTransport/constants'
+import { DepartureTable, PublicTransportationCard } from "."
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrain, faTrainSubway } from "@fortawesome/free-solid-svg-icons"
 
 export const PublicTransportWidget = () => {
-    const { trainData, metroData } = usePublicTransportApi()
-    const queryClient = useQueryClient()
-    const refetchMetroData = () => queryClient.invalidateQueries({ queryKey: ['metroData'] });
-    const refetchTrainData = () => queryClient.invalidateQueries({ queryKey: ['trainData'] });
+    const { trains, metros, refetchMetros, refetchTrains } = usePublicTransportApi()
+
     return (
         <div className='grid grid-cols-2 gap-4 border-red-300'>
-            <Button  onClick={refetchTrainData}>REFETCH Train</Button>
-            <Button  onClick={refetchMetroData}>REFETCH METRO</Button>
             <PublicTransportationCard key='train-card'>
-                <PublicTransportationCard.Header text={'Odenplan'} isLoading={trainData.isLoading} lastUpdated={new Date(trainData?.response?.ResponseData?.LatestUpdate ?? '')} />
-                <PublicTransportationCard.Content info={trainData.response?.ResponseData.Trains.filter(train => train.JourneyDirection === 2 && linesToSollentuna.includes(train.LineNumber))} />
+                <PublicTransportationCard.Header
+                    text={'Odenplan'}
+                    isLoading={trains.isLoading}
+                    lastUpdated={new Date(trains?.data?.ResponseData?.LatestUpdate ?? '')}
+                    refetchButton={
+                        <Button className="mr-2 my-auto px-3 border-b-8 border-[#cd407f]" onClick={refetchTrains}>
+                            <FontAwesomeIcon className="my-auto" icon={faTrain} />
+                        </Button>}
+                />
+                <PublicTransportationCard.Content>
+                    <DepartureTable data={trains?.data?.ResponseData?.Trains?.filter(train => train.JourneyDirection === 2 && linesToSollentuna.includes(train.LineNumber))} />
+                </PublicTransportationCard.Content>
             </PublicTransportationCard>
             <PublicTransportationCard key='metro-card'>
-                <PublicTransportationCard.Header text={'Abrahamsberg'} isLoading={metroData.isLoading} lastUpdated={new Date(metroData?.response?.ResponseData?.LatestUpdate ?? '')} />
-                <PublicTransportationCard.Content info={metroData.response?.ResponseData.Metros.filter(metro => metro.JourneyDirection === 2)} />
+                <PublicTransportationCard.Header
+                    text={'Abrahamsberg'}
+                    isLoading={metros?.isLoading}
+                    lastUpdated={new Date(metros?.data?.ResponseData?.LatestUpdate ?? '')}
+                    refetchButton={
+                        <Button className="mr-2 my-auto px-3 border-b-8 border-[#168541]" onClick={refetchMetros}>
+                            <FontAwesomeIcon className="my-auto" icon={faTrainSubway} />
+                        </Button>
+                    }
+                />
+                <PublicTransportationCard.Content >
+                    <DepartureTable data={metros?.data?.ResponseData?.Metros?.filter(metro => metro.JourneyDirection === 2)} />
+                </PublicTransportationCard.Content>
             </PublicTransportationCard>
         </div>
     )

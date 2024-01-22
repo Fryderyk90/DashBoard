@@ -1,13 +1,10 @@
-import {BounceLoader} from "react-spinners";
+import { BounceLoader } from "react-spinners";
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-  } from "../../ui/card"
-import { Button } from "@/components/ui/button"
-import { Transport } from "@/api/publicTransport/types";
-import { DepartureTable } from "../../DepartureTable";
+} from "../../ui/card";
 
 interface PublicTransportationCardProps {
     children?: React.ReactNode;
@@ -21,14 +18,14 @@ export const PublicTransportationCard = ({ children }: PublicTransportationCardP
     )
 };
 
-interface HeaderProps { text: string, lastUpdated?: Date | undefined, isLoading: boolean, refetch?: () => Promise<void> }
+interface HeaderProps { text: string, lastUpdated?: Date | undefined, isLoading: boolean, refetchButton?: React.ReactNode }
 PublicTransportationCard.Header = (props: HeaderProps) => {
     return (
         <CardHeader data-testid="public-transportation-card-header">
             <CardTitle className="flex align-middle justify-between">
                 <span className="flex align-middle">
+                    {props.refetchButton}
                     <span className="my-auto mr-2 text-xl"> {props.text}</span>
-                    <Button className="ml-2 my-auto" onClick={props.refetch}></Button>
                 </span>
                 {props.lastUpdated &&
                     <span className="my-auto mr-2 text-sm">
@@ -39,11 +36,13 @@ PublicTransportationCard.Header = (props: HeaderProps) => {
         </CardHeader>)
 };
 
-interface ContentProps { info: Transport[] | undefined }
+interface ContentProps {
+    children?: React.ReactNode;
+}
 PublicTransportationCard.Content = (props: ContentProps) => {
     return (
         <CardContent className="py-2">
-            <DepartureTable data={props.info ?? []} />
+            {props.children}
         </CardContent>
     )
 };

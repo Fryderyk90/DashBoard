@@ -1,37 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery,useQueryClient } from "@tanstack/react-query";
 import { getMetroInformation, getTrainInformation } from "./constants";
-import { DeparturesResponse, TransportDataObject, UseQueryResult } from "./types";
+import { DeparturesResponse, UseQueryResult } from "./types";
 
 
 
 export const usePublicTransportApi = () => {
-    const { isLoading: trainsIsLoading, isError: trainsIsError, error: trainsError, data: trainsResponse } = useQuery<DeparturesResponse, Error>({
+    const trains = useQuery<DeparturesResponse, Error>({
         queryKey: ['trainData'],
         queryFn: () => fetchTransportData(getTrainInformation),
         staleTime: 540000
     }) as UseQueryResult<DeparturesResponse, Error>;
 
-    const { isLoading: metrosIsLoading, isError: metrosIsError, error: metrosError, data: metrosResponse } = useQuery<DeparturesResponse, Error>({
+    const metros = useQuery<DeparturesResponse, Error>({
         queryKey: ['metroData'],
         queryFn: () => fetchTransportData(getMetroInformation),
         staleTime: 540000
     }) as UseQueryResult<DeparturesResponse, Error>;
 
-    const trainData: TransportDataObject = {
-        isLoading: trainsIsLoading,
-        isError: trainsIsError,
-        error: trainsError,
-        response: trainsResponse
-    }
+    const queryClient = useQueryClient()
+    const refetchMetros = () => queryClient.invalidateQueries({ queryKey: ['metroData'] });
+    const refetchTrains = () => queryClient.invalidateQueries({ queryKey: ['trainData'] });
 
-    const metroData: TransportDataObject = {
-        isLoading: metrosIsLoading,
-        isError: metrosIsError,
-        error: metrosError,
-        response: metrosResponse
-    }
 
-    return { trainData, metroData };
+    return { trains, metros,refetchMetros,refetchTrains };
 }
 
 
