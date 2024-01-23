@@ -1,11 +1,9 @@
 import { useGraphClient } from "@/api/microsoftGraph/GraphClientContext";
-import { initializeGraphClient } from "@/api/microsoftGraph/MsGraphInizialiser";
 import { TodoItem } from "@/api/microsoftGraph/types";
 import { useMicrosoftGraphApi } from "@/api/microsoftGraph/useMicrosoftGraphApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label";
-import { useMsal } from "@azure/msal-react";
 
 import { ReactNode, useState } from "react";
 import { BounceLoader } from "react-spinners";

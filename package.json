@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./src/main.tsx",
+  "homepage": "https://fryderyk90.github.io/DashBoard",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
@@ -26,6 +28,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.17.15",
+    "async": "^3.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "react": "^18.2.0",
