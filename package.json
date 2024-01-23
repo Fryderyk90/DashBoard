@@ -6,7 +6,7 @@
   "homepage": "https://fryderyk90.github.io/DashBoard/",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run build && test -d build || mkdir build && gh-pages -d build",
     "dev": "vite",
     "test": "vitest",
     "test:watch": "vitest --watch",
@@ -14,6 +14,9 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "gh-pages": {
+    "src": ["build/index.html", "build/css/*", "build/js/*", "build/assets/*"]
+ },
   "dependencies": {
     "@azure/msal-browser": "^3.7.0",
     "@azure/msal-react": "^2.0.9",

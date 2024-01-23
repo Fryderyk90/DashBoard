@@ -12,6 +12,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'dist', // Specify your desired output directory (e.g., 'dist' or 'build')
+  },
   test: {
     globals: true,
     environment: 'jsdom',
