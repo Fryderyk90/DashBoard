@@ -1,8 +1,4 @@
-
-import { AccountInfo } from "@azure/msal-common";
-import { IPublicClientApplication } from "@azure/msal-browser";
 import { graphConfig, listId, msalConfig } from "./authConfig";
-import { loginRequest } from "@/api/microsoftGraph/authConfig";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { UseQueryResult, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useIsAuthenticated } from "@azure/msal-react";
@@ -72,38 +68,4 @@ export const useMicrosoftGraphApi = (graphClient: Client | undefined) => {
 
 
   return { todos, completeTask, subscribeToToDoNotifications };
-};
-
-
-
-const createClient = async (accessToken: string) => {
-  return await Client.init({
-    authProvider: (done) => {
-      done(null, accessToken);
-    },
-
-  })
-}
-
-
-const getAccessToken = async (account: AccountInfo, instance: IPublicClientApplication) => {
-  try {
-    // Check if user is already logged in
-    if (!account) {
-      // If user is not logged in, initiate login
-      await instance.loginPopup({
-        scopes: loginRequest.scopes,
-      });
-    }
-
-    // Get the access token silently
-    return await instance.acquireTokenSilent({
-      scopes: loginRequest.scopes, account
-    }).then((response) => (response));
-
-
-  } catch (error) {
-    console.error('Error getting access token:', error);
-    throw error;
-  }
 };

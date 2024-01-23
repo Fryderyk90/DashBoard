@@ -1,8 +1,9 @@
 {
-  "name": "dashboard",
+  "name": "Dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://fryderyk90.github.io/DashBoard/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
